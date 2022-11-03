@@ -21,7 +21,7 @@
 		<c:forEach items="${list}" var="list">
 			<tr>
 				<td>${list.num}</td>
-				<td>${list.title}</td>
+				<td><a href="detail?num=${list.num}">${list.title}</a></td>
 				<td>${list.writer}</td>
 				<td>${list.hit}</td>
 				<td>${list.regDate}</td>
@@ -29,20 +29,20 @@
 		</c:forEach>
 	</table>
 
-	<a class="btn btn-primary" href="#">글쓰기</a>
-	<form class="row g-3 mt-2">
+	<a class="btn btn-primary" href="./write">글쓰기</a>
+	<form action="./list" class="row g-3 mt-2">
 		<select id="kind" name="kind" class="form-select" aria-label="Default select example" style="width: 100px; height: 40px;">
 			<option class="kinds" value="title">제목</option>
 			<option class="kinds" value="contents">내용</option>
 			<option class="kinds" value="writer">작성자</option>
 		</select>
-		<div class="col-auto">
-			<input type="text" name="search" id="search" value="" class="form-control" id="inputPassword2" placeholder="검색어를 입력해주세요">
-		</div>
-		<div class="col-auto">
-			<button type="button" class="btn btn-primary mb-3">검색</button>
-		</div>
-	</form>
-
+			<div class="col-auto">
+				<input type="text" name="search" id="search" value=""
+					class="form-control" id="inputPassword2" placeholder="검색어를 입력해주세요">
+			</div>
+			<div class="col-auto">
+				<button type="submit" class="btn btn-primary mb-3">검색</button>
+			</div>
+		</form>
 </body>
 </html>

@@ -11,6 +11,9 @@ public class Pager {
 	private Long startRow; //mapper에서 꺼내서 사용할 변수
 	private Long lastRow; //mapper에서 꺼내서 사용할 변수
 
+	//검색어 
+	private String search;
+
 	public Pager() {
 		this.perPage = 10L;
 		this.perBlock = 5L;

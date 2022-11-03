@@ -9,21 +9,53 @@
 	<select id="getList" parameterType="Pager" resultType="QnaVO">
 		SELECT *
 		FROM QNA
-		WHERE
-		<choose>
-			<when test="kind == 'title'">TITLE</when>
-			<when test="kind == 'writer'">WRITER</when>
-			<otherwise>contents</otherwise>	
-		</choose>
-		
+		<if test="search != null">
+		WHERE writer LIKE CONCAT('%',#{search},'%')
+		</if>
 		ORDER BY NUM DESC
 		LIMIT #{startRow}, #{perPage}
 	</select>
 	
 	<!-- 글쓰기 -->
-	<insert id="setWrite" parameterType="QnaVO">
+	<insert id="setWrite" parameterType="QnaVO" useGeneratedKeys="true" keyProperty="num">
 		INSERT INTO QNA
 		VALUES (null, #{writer}, #{title}, #{contents}, 0, now(), 1, 1, 1);
 	</insert>
+	
+	<!-- 첨부파일 -->
+	<insert id="setAddFile" parameterType="QnaFileVO">
+		INSERT INTO QNAFILES
+		VALUES (NULL, #{num}, #{fileName}, #{oriName})
+	</insert>
+	
+	<!-- 상세보기 -->
+	<select id="getDetail" parameterType="QnaVO" resultMap="getDetailResult">
+		SELECT *
+		FROM QNA Q
+		LEFT JOIN QNAFILES QF
+		ON Q.num = QF.num
+		WHERE Q.num= #{num}
+	</select>
+	
+	<resultMap type="QnaVO" id="getDetailResult">
+		<id column="num" property="num" />
+		<result column="writer" property="writer" />
+		<result column="title" property="title" />
+		<result column="contents" property="contents" />
+		<result column="regDate" property="regDate" />
+		<collection property="qnaFileVOs" javaType="List" ofType="QnaFileVO">
+			<id column="fileNum" property="fileNum" />
+			<result column="fileName" property="fileName" />
+			<result column="oriName" property="oriName" />
+		</collection>
+	</resultMap>
+	
+	<!-- 파일 정보 --> 
+	<select id="getFileDetail" parameterType="QnaFileVO" resultType="QnaFileVO">
+		SELECT *
+		FROM QNAFILES
+		WHERE FILENUM = #{fileNum}
+	</select>	
+
 
 </mapper>
